@@ -1,52 +1,115 @@
-<x-guest-layout>
+@extends('layouts.auth')
+
+@section('title', 'إنشاء حساب جديد')
+
+@section('content')
+<div class="p-8">
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">إنشاء حساب جديد</h2>
+        <p class="text-gray-500 text-sm mt-1">انضم إلينا وابدأ رحلتك التعليمية</p>
+    </div>
+
+    @if ($errors->any())
+        <div class="alert-message bg-red-50 text-red-700 border border-red-200">
+            <i class="fas fa-exclamation-circle ml-2"></i>
+            @foreach ($errors->all() as $error)
+                <p class="text-sm">{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
         <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <div class="input-group">
+            <input type="text" name="name" id="name" placeholder=" " value="{{ old('name') }}" required autofocus>
+            <label for="name">
+                <i class="fas fa-user ml-1"></i> الاسم الكامل
+            </label>
         </div>
 
         <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="input-group">
+            <input type="email" name="email" id="email" placeholder=" " value="{{ old('email') }}" required>
+            <label for="email">
+                <i class="fas fa-envelope ml-1"></i> البريد الإلكتروني
+            </label>
+        </div>
+
+        <!-- Student ID (Optional) -->
+        <div class="input-group">
+            <input type="text" name="student_id" id="student_id" placeholder=" " value="{{ old('student_id') }}">
+            <label for="student_id">
+                <i class="fas fa-id-card ml-1"></i> الرقم الجامعي (اختياري)
+            </label>
+        </div>
+
+        <!-- Phone (Optional) -->
+        <div class="input-group">
+            <input type="tel" name="phone" id="phone" placeholder=" " value="{{ old('phone') }}">
+            <label for="phone">
+                <i class="fas fa-phone ml-1"></i> رقم الهاتف (اختياري)
+            </label>
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="input-group">
+            <input type="password" name="password" id="password" placeholder=" " required>
+            <label for="password">
+                <i class="fas fa-lock ml-1"></i> كلمة المرور
+            </label>
+            <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onclick="togglePassword('password', 'toggleIcon1')">
+                <i class="fas fa-eye" id="toggleIcon1"></i>
+            </button>
         </div>
 
         <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div class="input-group">
+            <input type="password" name="password_confirmation" id="password_confirmation" placeholder=" " required>
+            <label for="password_confirmation">
+                <i class="fas fa-check-circle ml-1"></i> تأكيد كلمة المرور
+            </label>
+            <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onclick="togglePassword('password_confirmation', 'toggleIcon2')">
+                <i class="fas fa-eye" id="toggleIcon2"></i>
+            </button>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn-auth mt-4">
+            <i class="fas fa-user-plus ml-2"></i>
+            إنشاء حساب
+        </button>
     </form>
-</x-guest-layout>
+
+    <!-- Login Link -->
+    <div class="text-center mt-6 pt-4 border-t border-gray-100">
+        <p class="text-sm text-gray-600">
+            لديك حساب بالفعل؟
+            <a href="{{ route('login') }}" class="text-primary font-semibold hover:text-accent transition">
+                تسجيل الدخول
+                <i class="fas fa-arrow-left mr-1"></i>
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function togglePassword(fieldId, iconId) {
+        const passwordInput = document.getElementById(fieldId);
+        const toggleIcon = document.getElementById(iconId);
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+@endsection

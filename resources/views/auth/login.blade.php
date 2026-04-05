@@ -1,68 +1,120 @@
-<x-guest-layout>
+@extends('layouts.auth')
+
+@section('title', 'تسجيل الدخول')
+
+@section('content')
+<div class="p-8">
+    <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">مرحباً بعودتك</h2>
+        <p class="text-gray-500 text-sm mt-1">سجل دخولك للوصول إلى حسابك</p>
+    </div>
+
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session('status'))
+        <div class="alert-message bg-green-50 text-green-700 border border-green-200">
+            <i class="fas fa-check-circle ml-2"></i>
+            {{ session('status') }}
+        </div>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert-message bg-red-50 text-red-700 border border-red-200">
+            <i class="fas fa-exclamation-circle ml-2"></i>
+            @foreach ($errors->all() as $error)
+                <p class="text-sm">{{ $error }}</p>
+            @endforeach
+        </div>
+    @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
+        <div class="input-group">
+            <input type="email" name="email" id="email" placeholder=" " value="{{ old('email') }}" required autofocus>
+            <label for="email">
+                <i class="fas fa-envelope ml-1"></i> البريد الإلكتروني
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
+        <!-- Password -->
+        <div class="input-group">
+            <input type="password" name="password" id="password" placeholder=" " required>
+            <label for="password">
+                <i class="fas fa-lock ml-1"></i> كلمة المرور
+            </label>
+            <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onclick="togglePassword()">
+                <i class="fas fa-eye" id="toggleIcon"></i>
+            </button>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="flex items-center justify-between mb-6">
+            <label class="flex items-center cursor-pointer">
+                <input type="checkbox" name="remember" id="remember" class="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary">
+                <span class="mr-2 text-sm text-gray-600">تذكرني</span>
+            </label>
+
             @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
+                <a href="{{ route('password.request') }}" class="text-sm text-primary hover:text-accent transition">
+                    <i class="fas fa-key ml-1"></i> نسيت كلمة المرور؟
                 </a>
             @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
         </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-auth">
+            <i class="fas fa-sign-in-alt ml-2"></i>
+            تسجيل الدخول
+        </button>
     </form>
 
-     <!-- ========== أضف كود بصمة الوجه هنا ========== -->
-    <div class="text-center mt-4">
+    <!-- Face Login -->
+    <div class="text-center mt-6">
         <div class="relative">
             <div class="absolute inset-0 flex items-center">
-                <div class="w-full border-t border-gray-300"></div>
+                <div class="w-full border-t border-gray-200"></div>
             </div>
             <div class="relative flex justify-center text-sm">
-                <span class="px-2 bg-white text-gray-500">أو</span>
+                <span class="px-3 bg-white text-gray-400">أو</span>
             </div>
         </div>
 
         <div class="mt-4">
-            <a href="{{ route('face.verify') }}"
-               class="w-full inline-block text-center bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 px-4 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition">
-                <i class="fas fa-face-smile ml-2"></i>
+            <a href="{{ route('face.verify') }}" class="btn-face">
+                <i class="fas fa-face-smile text-lg"></i>
                 تسجيل الدخول ببصمة الوجه
             </a>
         </div>
     </div>
-    <!-- =========================================== -->
-</x-guest-layout>
+
+    <!-- Register Link -->
+    <div class="text-center mt-6 pt-4 border-t border-gray-100">
+        <p class="text-sm text-gray-600">
+            ليس لديك حساب؟
+            <a href="{{ route('register') }}" class="text-primary font-semibold hover:text-accent transition">
+                إنشاء حساب جديد
+                <i class="fas fa-arrow-left mr-1"></i>
+            </a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
+    }
+</script>
+@endsection
