@@ -72,4 +72,31 @@ class User extends Authenticatable
     {
         return $this->role === 'admin';
     }
+
+    // أضف هذه العلاقات
+public function organization()
+{
+    return $this->belongsTo(Organization::class);
+}
+
+public function ownedOrganizations()
+{
+    return $this->hasMany(Organization::class, 'owner_id');
+}
+
+public function isSuperAdmin()
+{
+    return $this->role === 'super_admin';
+}
+
+public function isOrganizationAdmin()
+{
+    return $this->role === 'admin';
+}
+
+// Scope للحدود حسب المؤسسة
+public function scopeForOrganization($query, $organizationId)
+{
+    return $query->where('organization_id', $organizationId);
+}
 }

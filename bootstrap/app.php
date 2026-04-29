@@ -13,8 +13,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
          $middleware->alias([
         'role' => \App\Http\Middleware\CheckRole::class,
+        'tenant' => \App\Http\Middleware\TenantMiddleware::class,
+    ]);
+    // إضافة الـ middleware إلى الـ web group
+    $middleware->web(append: [
+        \App\Http\Middleware\TenantMiddleware::class,
     ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+
     })->create();

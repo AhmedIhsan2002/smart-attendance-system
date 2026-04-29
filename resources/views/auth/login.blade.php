@@ -6,7 +6,7 @@
 <div class="p-8">
     <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">مرحباً بعودتك</h2>
-        <p class="text-gray-500 text-sm mt-1">سجل دخولك للوصول إلى حسابك</p>
+        <p class="text-gray-500 text-sm mt-1">سجل دخولك باستخدام الرقم الجامعي وكلمة المرور</p>
     </div>
 
     <!-- Session Status -->
@@ -29,11 +29,11 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <!-- Email Address -->
+        <!-- 🔁 الرقم الجامعي (بدلاً من البريد الإلكتروني) -->
         <div class="input-group">
-            <input type="email" name="email" id="email" placeholder=" " value="{{ old('email') }}" required autofocus>
-            <label for="email">
-                <i class="fas fa-envelope ml-1"></i> البريد الإلكتروني
+            <input type="text" name="student_id" id="student_id" placeholder=" " value="{{ old('student_id') }}" required autofocus>
+            <label for="student_id">
+                <i class="fas fa-id-card ml-1"></i> الرقم الجامعي <span class="text-red-500">*</span>
             </label>
         </div>
 
@@ -41,7 +41,7 @@
         <div class="input-group">
             <input type="password" name="password" id="password" placeholder=" " required>
             <label for="password">
-                <i class="fas fa-lock ml-1"></i> كلمة المرور
+                <i class="fas fa-lock ml-1"></i> كلمة المرور <span class="text-red-500">*</span>
             </label>
             <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     onclick="togglePassword()">

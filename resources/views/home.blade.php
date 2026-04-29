@@ -153,25 +153,19 @@
             </p>
 
             <!-- Buttons -->
-            <div class="flex flex-wrap justify-center gap-4 animate__animated animate__fadeInUp animate__delay-2s">
-                @guest
-                    <a href="{{ route('register') }}" class="btn-primary text-white px-8 py-3 rounded-lg text-lg font-semibold btn-glow inline-flex items-center group">
-                        ابدأ الآن
-                        <i class="fas fa-arrow-left mr-2 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                    <a href="#features" class="bg-white/20 backdrop-blur text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white/30 transition-all hover:scale-105 inline-flex items-center">
-                        <i class="fas fa-play-circle ml-2"></i>
-                        تعرف على المزيد
-                    </a>
-                @endguest
-                @auth
-                    <a href="{{ auth()->user()->role == 'student' ? route('student.dashboard') : (auth()->user()->role == 'instructor' ? route('instructor.dashboard') : route('admin.dashboard')) }}"
-                       class="btn-primary text-white px-8 py-3 rounded-lg text-lg font-semibold btn-glow inline-flex items-center">
-                        <i class="fas fa-tachometer-alt ml-2"></i>
-                        الذهاب إلى لوحة التحكم
-                    </a>
-                @endauth
-            </div>
+          <div class="flex flex-wrap justify-center gap-4">
+    <!-- طلاب ودكاترة -->
+    <a href="{{ route('login.educational') }}" class="bg-blue-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-blue-600 transition inline-flex items-center">
+        <i class="fas fa-user-graduate ml-2"></i>
+        تسجيل دخول الطلاب والدكاترة
+    </a>
+
+    <!-- إداريين -->
+    <a href="{{ route('login.admin') }}" class="bg-purple-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-purple-600 transition inline-flex items-center">
+        <i class="fas fa-building-shield ml-2"></i>
+        تسجيل دخول الإداريين
+    </a>
+</div>
         </div>
     </div>
 

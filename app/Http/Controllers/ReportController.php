@@ -32,19 +32,19 @@ class ReportController extends Controller
         $dateFrom = $request->date_from ?? Carbon::now()->startOfMonth()->format('Y-m-d');
         $dateTo = $request->date_to ?? Carbon::now()->format('Y-m-d');
 
-        // إحصائيات عامة
+
         $stats = $this->getStatistics($user, $selectedCourse, $dateFrom, $dateTo);
 
-        // بيانات الرسم البياني
+
         $chartData = $this->getChartData($user, $selectedCourse, $dateFrom, $dateTo);
 
-        // بيانات الجدول
+
         $attendanceData = $this->getAttendanceTable($user, $selectedCourse, $dateFrom, $dateTo);
 
         return view('reports', compact('courses', 'selectedCourse', 'dateFrom', 'dateTo', 'stats', 'chartData', 'attendanceData'));
     }
 
-    // إحصائيات عامة
+
     private function getStatistics($user, $courseId, $dateFrom, $dateTo)
     {
         $query = Attendance::whereBetween('check_in_time', [$dateFrom, $dateTo . ' 23:59:59']);
@@ -79,7 +79,7 @@ class ReportController extends Controller
         ];
     }
 
-    // بيانات الرسم البياني
+
     private function getChartData($user, $courseId, $dateFrom, $dateTo)
     {
         $dates = [];
@@ -123,7 +123,7 @@ class ReportController extends Controller
         ];
     }
 
-    // بيانات جدول الحضور
+
     private function getAttendanceTable($user, $courseId, $dateFrom, $dateTo)
     {
         $query = Attendance::with(['user', 'session.course'])

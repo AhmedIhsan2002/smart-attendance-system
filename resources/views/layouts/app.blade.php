@@ -69,7 +69,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-16">
                     <div class="flex items-center">
-                        <a href="{{ route('home') }}" class="flex items-center space-x-2 rtl:space-x-reverse">
+                      <a href="{{ url('/') }}" class="flex items-center space-x-2 rtl:space-x-reverse">
                             <i class="fas fa-face-recognition text-2xl text-primary"></i>
                             <span class="text-xl font-bold gradient-text">نظام الحضور الذكي</span>
                         </a>

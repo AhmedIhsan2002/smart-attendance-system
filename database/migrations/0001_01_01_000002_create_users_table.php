@@ -15,11 +15,12 @@ return new class extends Migration
       $table->id();
         $table->string('student_id')->unique()->nullable();
         $table->string('university_id')->nullable();
+         $table->foreignId('organization_id')->nullable()->constrained()->nullOnDelete();
         $table->string('name');
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();
         $table->string('password');
-        $table->enum('role', ['admin', 'instructor', 'student'])->default('student');
+        $table->enum('role', ['admin', 'instructor', 'student' , 'super_admin'])->default('student');
         $table->string('profile_photo')->nullable();
         $table->text('face_encoding')->nullable();
         $table->boolean('is_active')->default(true);
@@ -55,7 +56,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-         
+
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');

@@ -17,5 +17,10 @@
         "postcss": "^8.5.8",
         "tailwindcss": "^3.4.19",
         "vite": "^7.0.7"
+    },
+    "dependencies": {
+        "@types/three": "^0.184.0",
+        "gsap": "^3.15.0",
+        "three": "^0.184.0"
     }
 }

@@ -21,43 +21,56 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- الاسم الكامل (مطلوب) -->
         <div class="input-group">
             <input type="text" name="name" id="name" placeholder=" " value="{{ old('name') }}" required autofocus>
             <label for="name">
-                <i class="fas fa-user ml-1"></i> الاسم الكامل
+                <i class="fas fa-user ml-1"></i> الاسم الكامل <span class="text-red-500">*</span>
             </label>
         </div>
 
-        <!-- Email Address -->
+        <!-- الرقم الجامعي (مطلوب - سيستخدم لتسجيل الدخول) -->
+        <div class="input-group">
+            <input type="text" name="student_id" id="student_id" placeholder=" " value="{{ old('student_id') }}" required>
+            <label for="student_id">
+                <i class="fas fa-id-card ml-1"></i> الرقم الجامعي <span class="text-red-500">*</span>
+            </label>
+            <p class="text-xs text-gray-500 mt-1">سيستخدم هذا الرقم لتسجيل الدخول إلى النظام</p>
+        </div>
+
+        <!-- Role Selection -->
+<div class="input-group">
+    <select name="role" id="role" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" required>
+        <option value="student" {{ request('role') == 'student' ? 'selected' : '' }}>طالب</option>
+        <option value="instructor" {{ request('role') == 'instructor' ? 'selected' : '' }}>دكتور/محاضر</option>
+        <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>أدمن مؤسسة</option>
+    </select>
+    <label for="role">
+        <i class="fas fa-user-tag ml-1"></i> نوع الحساب <span class="text-red-500">*</span>
+    </label>
+</div>
+
+        <!-- البريد الإلكتروني (مطلوب) -->
         <div class="input-group">
             <input type="email" name="email" id="email" placeholder=" " value="{{ old('email') }}" required>
             <label for="email">
-                <i class="fas fa-envelope ml-1"></i> البريد الإلكتروني
+                <i class="fas fa-envelope ml-1"></i> البريد الإلكتروني <span class="text-red-500">*</span>
             </label>
         </div>
 
-        <!-- Student ID (Optional) -->
-        <div class="input-group">
-            <input type="text" name="student_id" id="student_id" placeholder=" " value="{{ old('student_id') }}">
-            <label for="student_id">
-                <i class="fas fa-id-card ml-1"></i> الرقم الجامعي (اختياري)
-            </label>
-        </div>
-
-        <!-- Phone (Optional) -->
+        <!-- رقم الهاتف (اختياري) -->
         <div class="input-group">
             <input type="tel" name="phone" id="phone" placeholder=" " value="{{ old('phone') }}">
             <label for="phone">
-                <i class="fas fa-phone ml-1"></i> رقم الهاتف (اختياري)
+                <i class="fas fa-phone ml-1"></i> رقم الهاتف
             </label>
         </div>
 
-        <!-- Password -->
+        <!-- كلمة المرور (مطلوبة) -->
         <div class="input-group">
             <input type="password" name="password" id="password" placeholder=" " required>
             <label for="password">
-                <i class="fas fa-lock ml-1"></i> كلمة المرور
+                <i class="fas fa-lock ml-1"></i> كلمة المرور <span class="text-red-500">*</span>
             </label>
             <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     onclick="togglePassword('password', 'toggleIcon1')">
@@ -65,11 +78,11 @@
             </button>
         </div>
 
-        <!-- Confirm Password -->
+        <!-- تأكيد كلمة المرور (مطلوب) -->
         <div class="input-group">
             <input type="password" name="password_confirmation" id="password_confirmation" placeholder=" " required>
             <label for="password_confirmation">
-                <i class="fas fa-check-circle ml-1"></i> تأكيد كلمة المرور
+                <i class="fas fa-check-circle ml-1"></i> تأكيد كلمة المرور <span class="text-red-500">*</span>
             </label>
             <button type="button" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                     onclick="togglePassword('password_confirmation', 'toggleIcon2')">
